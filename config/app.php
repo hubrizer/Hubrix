@@ -24,13 +24,13 @@ return [
         App\Backend\Providers\HookServiceProvider::class, //hook service provider - disabled will affect your hooks if using hooks
         App\Backend\Providers\EnqueueServiceProvider::class, //enqueue service provider - disabled will affect your scripts if using enqueue
         App\Backend\Providers\ShortcodeServiceProvider::class, //shortcode service provider - disabled will affect your shortcodes if using shortcodes
-        App\Backend\Providers\AjaxServiceProvider::class, //ajax service provider - disabled will affect your ajax if using ajax
+        App\Backend\Providers\HandlerServiceProvider::class, //ajax service provider - disabled will affect your ajax if using ajax
 
         // Frontend Providers
         App\Frontend\Providers\HookServiceProvider::class, //hook service provider - disabled will affect your hooks if using hooks
         App\Frontend\Providers\EnqueueServiceProvider::class, //enqueue service provider - disabled will affect your scripts if using enqueue
         App\Frontend\Providers\ShortcodeServiceProvider::class, //shortcode service provider - disabled will affect your shortcodes if using shortcodes
-        App\Frontend\Providers\AjaxServiceProvider::class, //ajax service provider - disabled will affect your ajax if using ajax
+        App\Frontend\Providers\HandlerServiceProvider::class, //ajax service provider - disabled will affect your ajax if using ajax
 
         /*
          * Add your custom providers here

@@ -2,27 +2,43 @@
 
 namespace App\Frontend\Providers;
 
+use App\Frontend\Controllers\ShortcodeController;
 
-class ShortcodeServiceProvider {
+class ShortcodeServiceProvider
+{
     /**
-     * Register the shortcode
+     * Register the shortcode and hooks.
      *
      * @return void
      */
     public function register(): void
     {
         error_log('Registering frontend shortcodes ...');
-        add_shortcode('my_frontend_shortcode', [$this, 'myShortcode']);
+
+        // Register shortcodes during WordPress init
+        add_action('init', [$this, 'registerShortcodes']);
+
+        // Render the modal in the footer
+        add_action('wp_footer', [$this, 'renderModalInFooter']);
     }
 
     /**
-     * Handle the shortcode
+     * Register the shortcodes.
      *
-     * @return string
+     * @return void
      */
-    public function myShortcode(): string
+    public function registerShortcodes(): void
     {
-        // Handle the shortcode
-        return 'Hello, World!';
+        add_shortcode('product_battle', [ShortcodeController::class, 'renderProductBattleShortcode']);
+    }
+
+    /**
+     * Render the modal in the footer.
+     *
+     * @return void
+     */
+    public function renderModalInFooter(): void
+    {
+        ShortcodeController::renderModals();
     }
 }

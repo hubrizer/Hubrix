@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand text-white" href="{{ config('admin_navbar_menu.logo_url', 'menus') }}">
-            <img src="{{ get_public_asset('backend/assets/media/logos/logo.png') }}" width="160px" alt="Backend Logo">
+        <a class="navbar-brand text-white" href="{{ config('admin_navbar_menu.menu_items.dashboard.url', 'menus') }}">
+            <img src="{{ get_public_asset('backend/assets/media/logos/logo.png') }}" width="160px" alt="{{ config('constants.plugin_name', 'config') }}">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

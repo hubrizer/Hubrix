@@ -45,6 +45,7 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
+            'window.$': 'jquery'
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].bundle.css',

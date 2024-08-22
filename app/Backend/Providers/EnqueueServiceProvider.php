@@ -15,7 +15,7 @@ class EnqueueServiceProvider
         }
 
         // Load assets specifically for backend AJAX requests
-        if (defined('DOING_AJAX') && DOING_AJAX) {
+        if (wp_doing_ajax()) {
             add_action('admin_init', [$this, 'enqueueAjaxAssets'], 10);
         }
     }

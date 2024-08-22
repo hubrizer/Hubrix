@@ -9,4 +9,8 @@ namespace App\Frontend\Controllers;
  */
 class BaseController {
 
+    public function __construct() {
+        // Add your constructor logic here
+    }
+
 }

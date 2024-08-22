@@ -14,7 +14,8 @@ function getEntries(basePath, type = 'scripts') {
         const entryFile = path.join(pagePath, `index.${type === 'scripts' ? 'js' : 'scss'}`);
 
         if (fs.existsSync(entryFile)) {
-            entries[`${pageName}${type === 'scripts' ? 'script' : 'style'}`] = entryFile;
+            entries[`${pageName}${type === 'scripts' ? 'Script' : 'Style'}`] = entryFile;
+            console.log(`Added entry: ${pageName}${type === 'scripts' ? 'script' : 'style'}`);
         }
     });
 
@@ -25,8 +26,8 @@ module.exports = merge(common, {
     entry: {
         main: path.resolve(__dirname, 'resources/_default/frontend/src/scripts.js'),
         plugins: path.resolve(__dirname, 'resources/_default/frontend/src/plugins.js'),
-        styles: path.resolve(__dirname, 'resources/_default/frontend/src/style.scss'),
-        vendors: ['bootstrap/dist/css/bootstrap.min.css'],  // Add vendor CSS files here
+        style: path.resolve(__dirname, 'resources/_default/frontend/src/style.scss'),
+        vendors: ['bootstrap/dist/css/bootstrap.min.css'],
         ...getEntries('resources/_default/frontend/src/scripts/pages', 'scripts'),
         ...getEntries('resources/_default/frontend/src/styles/pages', 'styles'),
     },
@@ -38,6 +39,14 @@ module.exports = merge(common, {
     resolve: {
         alias: {
             '@frontend': path.resolve(__dirname, 'resources/_default/frontend/src'),
+            '@frontend-mixins': path.resolve(__dirname, 'resources/_default/frontend/src/scripts/mixins'),
         },
+        fallback: {
+            "path": require.resolve("path-browserify"),
+        },
+        modules: [
+            path.resolve(__dirname, 'resources/_default/frontend/src'),
+            'node_modules',
+        ],
     },
 });

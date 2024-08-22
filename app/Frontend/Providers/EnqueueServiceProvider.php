@@ -21,11 +21,11 @@ class EnqueueServiceProvider
 
             wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-plugins-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/plugins.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
             wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/vendors.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
-            wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-styles-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/styles.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
+            wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-styles-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/style.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
             wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-main-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/main.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
 
             wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/vendors.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
-            wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-main-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/styles.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
+            wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-main-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/style.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
 
             wp_localize_script(HUBRIX_PLUGIN_SLUG.'-frontend-main-js', 'js_frontend_obj', [
                 'ajax_url' => admin_url('admin-ajax.php'),

@@ -8,7 +8,7 @@ class LogUserLoginHook
     /**
      * Initialize the hook.
      */
-    public static function init()
+    public static function init(): void
     {
         // Register the wp_login hook to log user login events
         add_action('wp_login', [self::class, 'handle'], 10, 2);
