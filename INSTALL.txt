@@ -1,0 +1,18 @@
+1. Copy all files into your folder of choice with in your WordPress/wp-content/plugins folder i.e. /home/mywebsite.com/public_html/wp-content/plugins/my-plugin
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Walk through the wizard
+4. Happy Developing!
+
+Running Webpack:
+To build the backend or frontend assets, you can run:
+
+Backend Build: webpack --env target=backend
+Frontend Build: webpack --env target=frontend
+
+npm run build:dev
+npm run build:prod
+npm run build
+
+Building wp-admin menu:
+reference config/menus
+also go through each of config files to make changes

@@ -1,0 +1,2 @@
+The public folder is where npm run build will place the files from your src folder after it has been transpiled and bundled.
+These files are static and will be served by your web server. You should also reference any assets from this folder in your html file not your src folder.

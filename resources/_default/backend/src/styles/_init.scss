@@ -1,0 +1,23 @@
+/** Main init file of global bootstrap and theme functions, mixins, variables and config **/
+
+/** Third-party plugins **/
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'sweetalert2/dist/sweetalert2.css';
+@import 'select2/dist/css/select2.css';
+@import 'flatpickr/dist/flatpickr.css';
+
+/** Custom layout variables **/
+@import "layout/_base";
+@import "layout/_variables";
+@import "layout/_variables.custom";
+
+/** Component variables **/
+@import "components/_variables";
+@import "components/_variables.custom";
+
+/** 3rd-Party plugins variables **/
+@import "vendors/plugins/_variables";
+@import "vendors/plugins/_variables.custom";

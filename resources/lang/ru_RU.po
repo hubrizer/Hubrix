@@ -1,0 +1,17 @@
+msgid "Hello, World!"
+msgstr "Привет, мир!"
+
+msgid "Login"
+msgstr "Войти"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Cancel"
+msgstr "Отмена"

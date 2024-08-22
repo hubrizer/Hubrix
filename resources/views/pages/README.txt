@@ -1,0 +1,1 @@
+All of the pages are stored in this directory. Each page is a blade template file. The pages are rendered by the PageController. The PageController uses the page slug to find the correct page in the database and then renders the page using the page's template file.

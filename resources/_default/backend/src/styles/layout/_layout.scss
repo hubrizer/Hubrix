@@ -1,0 +1,15 @@
+/**
+  Specific to WP-ADMIN - adjustments to wp-admin styles
+ */
+#wpcontent {
+  height: 100% !important;
+  padding-left: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+  .auto-fold #wpcontent {
+    position: relative !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+}

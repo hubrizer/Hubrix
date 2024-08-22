@@ -1,0 +1,17 @@
+msgid "Hello, World!"
+msgstr "नमस्ते, दुनिया!"
+
+msgid "Login"
+msgstr "लॉग इन करें"
+
+msgid "Logout"
+msgstr "लॉग आउट करें"
+
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+msgid "Save"
+msgstr "सहेजें"
+
+msgid "Cancel"
+msgstr "रद्द करें"

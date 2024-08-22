@@ -1,0 +1,26 @@
+<?php
+/**
+ * Plugin Name: My Plugin Name
+ * Description: My Plugin Description.
+ * Version: 1.0.0
+ * Author: Hubrix Framework
+ * Text Domain: my-plugin-name
+ * Domain Path: /languages
+ *
+ * Notes:
+ * Make sure to rename this file to "<custom>.example" to <custom>.php before using it - <custom> being the
+ *
+ * @package MyPluginName
+ * @version 1.0.0
+ * @since 1.0.0
+ * @link https://mypluginurl.com
+ * @license GPL-2.0+
+ * @license URI https://www.gnu.org/licenses/gpl-2.0.html
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
+// Load the actual plugin initializer
+require_once plugin_dir_path(__FILE__) . 'index.php';

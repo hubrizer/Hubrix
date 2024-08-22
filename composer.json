@@ -1,0 +1,17 @@
+{
+  "require": {
+    "illuminate/database": "^v11.20.0",
+    "illuminate/events": "^11.20.0",
+    "illuminate/mail": "v11.20.0",
+    "illuminate/queue": "^11.20.0",
+    "eftec/bladeone": "^3.37-dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hubrix\\": "framework/",
+      "App\\": "app/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  }
+}
