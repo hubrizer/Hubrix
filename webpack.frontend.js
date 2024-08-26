@@ -30,6 +30,8 @@ module.exports = merge(common, {
         vendors: ['bootstrap/dist/css/bootstrap.min.css'],
         ...getEntries('resources/_default/frontend/src/scripts/pages', 'scripts'),
         ...getEntries('resources/_default/frontend/src/styles/pages', 'styles'),
+        ...getEntries('resources/_default/frontend/src/scripts/shortcodes', 'scripts'),
+        ...getEntries('resources/_default/frontend/src/styles/shortcodes', 'styles'),
     },
     output: {
         filename: 'js/[name].bundle.js',

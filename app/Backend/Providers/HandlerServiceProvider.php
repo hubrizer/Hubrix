@@ -13,7 +13,7 @@ class HandlerServiceProvider
 
     protected function autoloadHandlers()
     {
-        error_log('Autoloading backend ajax handlers...');
+        error_log('Autoloading backend handlers...');
 
         $handlerPath = HUBRIX_BACKEND_DIR . 'Handlers';
         $paths = [];
