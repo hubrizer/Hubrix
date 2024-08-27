@@ -2,52 +2,78 @@
 
 namespace App\Frontend\Providers;
 
+use Exception;
 use ReflectionClass;
 
+/**
+ * Class HandlerServiceProvider
+ * Description: This class is used to autoload frontend handlers.
+ *
+ * @package App\Frontend\Providers
+ */
 class HandlerServiceProvider
 {
+    /**
+     * Register the service provider.
+     * Description: This method is used to register the service. It's currently empty but is required by the Kernel.
+     *
+     * @return void
+     */
     public function register()
     {
+        if (is_admin() && !wp_doing_ajax()) {
+            return;
+        }
+
         $this->autoloadHandlers();
     }
 
-    protected function autoloadHandlers()
+    /**
+     * Autoload frontend handlers.
+     * Description: This method is used to autoload frontend handlers.
+     *
+     * @return void
+     */
+    protected function autoloadHandlers(): void
     {
         error_log('Autoloading frontend handlers...');
 
         $handlerPath = HUBRIX_FRONTEND_DIR . 'Handlers';
-        $paths = [];
 
         foreach (glob($handlerPath . '/**/*.php') as $file) {
-            $paths[] = $file;
-            $className = $this->getClassNameFromFile($file);
+            try {
+                $className = $this->getClassNameFromFile($file);
 
-            // Debugging: print or log the class names
-            //error_log('Attempting to load frontend class: ' . $className);
+                if (class_exists($className)) {
+                    $reflection = new ReflectionClass($className);
 
-            if (class_exists($className)) {
-                //error_log('Class exists: ' . $className);
-                $reflection = new ReflectionClass($className);
-
-                if ($reflection->hasMethod('register')) {
-                    $instance = new $className();
-                    //error_log('Instantiated class: ' . $className);
-                    $instance->register();
-                    //error_log('Registered frontend class: ' . $className);
+                    if ($reflection->hasMethod('register')) {
+                        $instance = new $className();
+                        $instance->register();
+                    } else {
+                        error_log('Frontend class does not have register method: ' . $className);
+                    }
                 } else {
-                    error_log('Frontend class does not have register method: ' . $className);
+                    error_log('Class not found: ' . $className);
                 }
-            } else {
-                error_log('Class not found: ' . $className);
+            } catch (Exception $e) {
+                error_log('Error loading frontend handler: ' . $e->getMessage());
             }
         }
     }
 
-    private function getClassNameFromFile($file): string
+    /**
+     * Get class name from file.
+     * Description: This method is used to get the class name from a file.
+     *
+     * @param string $file
+     * @return string
+     */
+    private function getClassNameFromFile(string $file): string
     {
-        $relativePath = str_replace(HUBRIX_FRONTEND_DIR, '', $file); // Replace the base path
-        $relativePath = str_replace('/', '\\', $relativePath); // Convert directory separators to namespace separators
-        $relativePath = str_replace('.php', '', $relativePath); // Remove the .php extension
+        $relativePath = str_replace(HUBRIX_FRONTEND_DIR, '', $file);
+        $relativePath = str_replace(['/', '\\'], '\\', $relativePath);
+        $relativePath = str_replace('.php', '', $relativePath);
 
         return 'App\\Frontend\\' . $relativePath;
     }

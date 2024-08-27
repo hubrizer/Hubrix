@@ -93,25 +93,17 @@ class Kernel
     private function init_providers(): void
     {
         error_log('Initializing Service Providers...');
-        $providers = config('providers','app') ?? [];
 
         // Initialize Eloquent provider
         EloquentServiceProvider::boot();
 
-        // Register providers based on context (AJAX, backend, frontend)
-        if (wp_doing_ajax()) {
-            error_log("\033[36m Registering Backend and Frontend AJAX Providers... \033[0m");
-            $this->register_providers([
-                BackendHandlerServiceProvider::class,
-                FrontendHandlerServiceProvider::class,
-            ]);
-        } elseif (WordPressHelpers::is_admin()) {
-            error_log("\033[36m Registering Backend Providers...\033[0m");
-            $this->register_providers($providers);
-        } else {
-            error_log("\033[31m Registering Frontend Providers...\033[0m");
-            $this->register_providers($providers);
-        }
+        // Register all providers (they will internally handle context checks)
+        $providers = config('providers','app') ?? [
+            BackendHandlerServiceProvider::class,
+            FrontendHandlerServiceProvider::class,
+        ];
+
+        $this->register_providers($providers);
     }
 
     /**

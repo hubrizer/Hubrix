@@ -148,7 +148,7 @@ class Bootstrap {
      */
     private static function setup_error_handling(): void
     {
-        if (Config::get('debug') || (defined('WP_DEBUG') && WP_DEBUG)) {
+        if (Config::get('debug', 'app')) {
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
