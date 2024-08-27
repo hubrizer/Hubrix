@@ -133,4 +133,15 @@ class CoreHelpers
     public static function create_nonce($nonce_action): string  {
         return NonceManager::create_nonce($nonce_action);
     }
+
+    /**
+     * Get all shortcodes registered by this provider.
+     *
+     * @return array
+     */
+    public static function get_registered_shortcodes(): array
+    {
+        global $registered_shortcodes;
+        return $registered_shortcodes ?? [];
+    }
 }

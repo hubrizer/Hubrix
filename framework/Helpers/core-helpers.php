@@ -1,6 +1,7 @@
 <?php
 
 use Hubrix\Core\Helpers\CoreHelpers;
+use Hubrix\Core\Helpers\RequestHelpers;
 
 if (!function_exists('view')) {
     /**
@@ -33,6 +34,13 @@ if (!function_exists('create_nonce')) {
     }
 }
 
+if (!function_exists('get_registered_shortcodes')) {
+    function get_registered_shortcodes()
+    {
+        return CoreHelpers::get_registered_shortcodes();
+    }
+}
+
 if (!function_exists('option')) {
     function option($option, $default = false)
     {
@@ -50,6 +58,18 @@ if (!function_exists('config')) {
 if (!function_exists('display_error')) {
     function display_error($code, $title, $message, $stackTrace = []): void
     {
-        CoreHelpers::display_error($code, $title, $message, $stackTrace);
+        CoreHelpers::displayError($code, $title, $message, $stackTrace);
+    }
+}
+
+if (!function_exists('request')) {
+    /**
+     * Get the request instance.
+     *
+     * @return requestHelpers
+     */
+    function request(): requestHelpers
+    {
+        return new requestHelpers();
     }
 }

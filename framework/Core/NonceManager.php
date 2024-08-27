@@ -29,6 +29,9 @@ class NonceManager {
      * @return bool True if the nonce is valid, false otherwise.
      */
     public static function verify_nonce($nonce, $action) {
+        error_log('NonceManager::verify_nonce() started.');
+        error_log('Nonce: ' . $nonce);
+        error_log('Action: ' . $action);
         return wp_verify_nonce($nonce, $action);
     }
 
@@ -40,8 +43,36 @@ class NonceManager {
      * @return void Terminates execution if nonce verification fails.
      */
     public static function verify_nonce_from_request($nonce_field, $action) {
-        if (!isset($_POST[$nonce_field]) || !self::verify_nonce($_POST[$nonce_field], $action)) {
-            wp_die(__('Nonce Manager : Nonce verification failed.', 'text-domain'), 403);
+        error_log('NonceManager::verify_nonce_from_request() started.');
+        error_log('Nonce field: ' . $nonce_field);
+        error_log('Action: ' . $action);
+
+
+        // Check if the nonce field is present in the request
+        if (!isset($_POST[$nonce_field])) {
+            $error_message = __('Nonce Manager: Nonce field not found in the request.', 'text-domain');
+
+            if (wp_doing_ajax()) {
+                wp_send_json_error(['message' => $error_message, 'error_code' => 'nonce_field_missing'], 403);
+            } else {
+                wp_die($error_message, __('Error'), 403);
+            }
+        }
+
+        // Verify the nonce value
+        if (!self::verify_nonce($_POST[$nonce_field], $action)) {
+            $error_message = __('Nonce Manager: Nonce verification failed.', 'text-domain');
+
+            if (wp_doing_ajax()) {
+                wp_send_json_error([
+                    'message' => $error_message,
+                    'error_code' => 'nonce_verification_failed',
+                    'nonce' => $_POST[$nonce_field],
+                    'action' => $action
+                ], 403);
+            } else {
+                wp_die($error_message, __('Error'), 403);
+            }
         }
     }
 

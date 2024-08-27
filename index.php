@@ -21,14 +21,11 @@ define('HUBRIX_ROOT_DIR', plugin_dir_path(__FILE__));
 // Load the environment variables from the .env file if autoload exists
 $autoload_path = HUBRIX_ROOT_DIR . 'vendor/autoload.php';
 
-// Load the vendor autoload file if it exists
-if (file_exists($autoload_path)) {
+if (!file_exists($autoload_path)) {
+    error_log('Autoload file missing. Please run `composer install`.');
+    exit('Autoload file missing. Please run `composer install`.');
+}else{
     require_once $autoload_path;
-} else {
-    // Log an error if the vendor autoload file is not found
-    error_log('No vendor autoload file found');
-    echo "No vendor autoload file found in " . HUBRIX_ROOT_DIR . 'vendor';
-    exit;
 }
 
 // Hook the initialization to plugins_loaded action

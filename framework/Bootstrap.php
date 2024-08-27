@@ -52,21 +52,41 @@ class Bootstrap {
         self::check_dependencies();
         self::load_dependencies();
         self::define_constants();
-        self::initialize_menus();
+
+        // Delay the initialization of menus and events
+        if (wp_doing_ajax()) {
+            self::initialize_for_ajax();
+        } elseif (is_admin()) {
+            self::initialize_for_admin();
+        } else {
+            self::initialize_for_frontend();
+        }
+
         self::load_textdomain();
         self::initialize_kernel();
+    }
 
-        // Log to ensure this block only runs once
+    private static function initialize_event_dispatcher() {
         error_log('- Initializing Event Dispatcher and Registering Events...');
-
-        // Instantiate the event dispatcher
         $dispatcher     = new Dispatcher();
         $eventRegistrar = new EventRegistrar($dispatcher);
         $eventRegistrar->registerEventsAndListeners([
             HUBRIX_PLUGIN_DIR . 'app/Backend',
             HUBRIX_PLUGIN_DIR . 'app/Frontend',
         ]);
+    }
 
+    private static function initialize_for_admin() {
+        self::initialize_menus();
+        self::initialize_event_dispatcher();
+    }
+
+    private static function initialize_for_ajax() {
+        // AJAX-specific initialization
+    }
+
+    private static function initialize_for_frontend() {
+        // Frontend-specific initialization
     }
 
     /**
@@ -128,8 +148,15 @@ class Bootstrap {
      */
     private static function setup_error_handling(): void
     {
-        if (Config::get('debug')) {
-            set_error_handler('custom_error_handler');
+        if (Config::get('debug') || (defined('WP_DEBUG') && WP_DEBUG)) {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+            error_log('Debug mode is enabled');
+        } else {
+            ini_set('display_errors', 0);
+            ini_set('display_startup_errors', 0);
+            error_reporting(0);
         }
     }
 
@@ -191,8 +218,7 @@ class Bootstrap {
     private static function initialize_menus(): void
     {
         error_log('* Initializing Menus...');
-
-        Menu::instance();
+        Menu::init();
     }
 
     /**
@@ -208,4 +234,5 @@ class Bootstrap {
 
         load_plugin_textdomain(HUBRIX_PLUGIN_DOMAIN, false, HUBRIX_PLUGIN_DIR . '/languages');
     }
+
 }

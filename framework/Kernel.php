@@ -80,7 +80,6 @@ class Kernel
     private function load_helpers(): void
     {
         error_log("-- Loading Helpers...");
-
         Helpers::load_helpers();
     }
 
@@ -94,7 +93,6 @@ class Kernel
     private function init_providers(): void
     {
         error_log('Initializing Service Providers...');
-
         $providers = config('providers','app') ?? [];
 
         // Initialize Eloquent provider
@@ -147,9 +145,11 @@ class Kernel
      */
     private function dispatch_routes(): void
     {
-        error_log("-- Dispatching Routes...");
-        RouteServiceProvider::boot(); // Ensure routes are registered first
-        Route::dispatch(); // Dispatch routes after WordPress is initialized
+        if (!is_admin()) {
+            error_log('-- Dispatching Routes...');
+            RouteServiceProvider::boot();
+            Route::dispatch();
+        }
     }
 
 }

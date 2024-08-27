@@ -19,7 +19,6 @@ use Hubrix\Core\Http\Route;
 Route::group(['prefix' => ''], function() {
     Route::get('test', function() {
         print_r('Hello World');
-
         exit;
     });
 
