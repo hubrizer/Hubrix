@@ -16,8 +16,8 @@ return [
          */
 
         // Core Providers
-        Hubrix\Providers\BladeOneServiceProvider::class, //bladeOne provider - disabled will affect your views if using blade
         Hubrix\Providers\EloquentServiceProvider::class, //eloquent provider - disabled will affect your models if using eloquent
+        Hubrix\Providers\BladeOneServiceProvider::class, //bladeOne provider - disabled will affect your views if using blade
         Hubrix\Providers\MailServiceProvider::class, //mail service provider - disabled will affect your emails if using mail
 
         // Backend Providers

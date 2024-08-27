@@ -2,15 +2,13 @@
 
 namespace Hubrix;
 
-use App\Backend\Providers\AjaxServiceProvider as BackendAjaxProvider;
-use App\Backend\Providers\EnqueueServiceProvider as BackendEnqueueProvider;
-use App\Backend\Providers\HookServiceProvider as BackendHookProvider;
+use App\Backend\Providers\HandlerServiceProvider as BackendHandlerServiceProvider;
+use App\Frontend\Providers\HandlerServiceProvider as FrontendHandlerServiceProvider;
+
 use Hubrix\Core\Helpers\WordPressHelpers;
 use Hubrix\Core\Http\Route;
 use Hubrix\Core\Plugin\Helpers;
-use App\Frontend\Providers\AjaxServiceProvider as FrontendAjaxProvider;
-use App\Frontend\Providers\EnqueueServiceProvider as FrontendEnqueueProvider;
-use App\Frontend\Providers\HookServiceProvider as FrontendHookProvider;
+
 use Hubrix\Providers\EloquentServiceProvider;
 use Hubrix\Providers\RouteServiceProvider;
 
@@ -40,10 +38,13 @@ class Kernel
      */
     public static function instance(): ?Kernel
     {
+        error_log("-- Initializing Core Kernel...");
+
         if (is_null(self::$instance)) {
             self::$instance = new self();
             self::$instance->init();
         }
+
         return self::$instance;
     }
 
@@ -78,6 +79,8 @@ class Kernel
      */
     private function load_helpers(): void
     {
+        error_log("-- Loading Helpers...");
+
         Helpers::load_helpers();
     }
 
@@ -90,24 +93,27 @@ class Kernel
      */
     private function init_providers(): void
     {
+        error_log('Initializing Service Providers...');
+
+        $providers = config('providers','app') ?? [];
+
         // Initialize Eloquent provider
         EloquentServiceProvider::boot();
 
-        // Register Backend Providers
-        if (WordPressHelpers::is_admin()) {
+        // Register providers based on context (AJAX, backend, frontend)
+        if (wp_doing_ajax()) {
+            error_log("\033[36m Registering Backend and Frontend AJAX Providers... \033[0m");
             $this->register_providers([
-                BackendEnqueueProvider::class,
-                BackendHookProvider::class,
-                BackendAjaxProvider::class,
+                BackendHandlerServiceProvider::class,
+                FrontendHandlerServiceProvider::class,
             ]);
+        } elseif (WordPressHelpers::is_admin()) {
+            error_log("\033[36m Registering Backend Providers...\033[0m");
+            $this->register_providers($providers);
+        } else {
+            error_log("\033[31m Registering Frontend Providers...\033[0m");
+            $this->register_providers($providers);
         }
-
-        // Register Frontend Providers
-        $this->register_providers([
-            FrontendEnqueueProvider::class,
-            FrontendHookProvider::class,
-            FrontendAjaxProvider::class,
-        ]);
     }
 
     /**
@@ -121,9 +127,13 @@ class Kernel
         foreach ($providers as $provider) {
             if (class_exists($provider)) {
                 $providerInstance = new $provider();
-                $providerInstance->register();
+                try {
+                    $providerInstance->register();
+                } catch (\Exception $e) {
+                    error_log("-- Failed to register provider: {$provider} with error: " . $e->getMessage());
+                }
             } else {
-                error_log("Provider class {$provider} not found.");
+                error_log("-- Provider class {$provider} not found.");
             }
         }
     }
@@ -137,7 +147,9 @@ class Kernel
      */
     private function dispatch_routes(): void
     {
+        error_log("-- Dispatching Routes...");
         RouteServiceProvider::boot(); // Ensure routes are registered first
         Route::dispatch(); // Dispatch routes after WordPress is initialized
     }
+
 }

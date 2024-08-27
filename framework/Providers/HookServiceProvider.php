@@ -2,9 +2,9 @@
 
 namespace Hubrix\Providers;
 
-use App\Hooks\Activate;
-use App\Hooks\Deactivate;
-use App\Hooks\Uninstall;
+use App\Plugin\Hooks\Activate;
+use App\Plugin\Hooks\Deactivate;
+use App\Plugin\Hooks\Uninstall;
 
 class HookServiceProvider
 {

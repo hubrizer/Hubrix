@@ -2,36 +2,20 @@
 
 namespace Hubrix\Providers;
 
-use Illuminate\Container\Container;
-use Illuminate\Mail\MailServiceProvider as IlluminateMailServiceProvider;
-
 class MailServiceProvider
 {
-    /**
-     * Register the mail service provider.
-     *
-     * @return void
-     */
     public function register()
     {
-        $container = new Container();
-
-        // Set up configuration for the mail service
-        $container['config'] = [
-            'mail.driver' => 'smtp',
-            'mail.host' => 'smtp.example.com',
-            'mail.port' => 587,
-            'mail.username' => 'your-username',
-            'mail.password' => 'your-password',
-            'mail.encryption' => 'tls',
-            'mail.from.address' => 'no-reply@example.com',
-            'mail.from.name' => 'Your Plugin Name',
-        ];
-
-        // Register the mail service provider from Illuminate
-        $mailServiceProvider = new IlluminateMailServiceProvider($container);
-        $mailServiceProvider->register();
-
-        // Now $container['mailer'] can be used to send emails
+        add_action('phpmailer_init', function($phpmailer) {
+            $phpmailer->isSMTP();
+            $phpmailer->Host = config('host','mail') ?? 'smtp.example.com';
+            $phpmailer->SMTPAuth = config('smtp_auth','mail') ?? true;
+            $phpmailer->Username = config('username','mail') ?? 'test@inbox.mailtrap.io';
+            $phpmailer->Password = config('password','mail') ?? 'password123changeme';
+            $phpmailer->SMTPSecure = config('encryption','mail') ?? 'tls';
+            $phpmailer->Port = config('port','mail') ?? 587;
+            $phpmailer->From = config('from.address','mail') ?? 'no-reply@inbox.maltrip.io';
+            $phpmailer->FromName = config('from.name','mail') ?? 'My Plugin Name';
+        });
     }
 }

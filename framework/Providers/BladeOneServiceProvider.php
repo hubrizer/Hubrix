@@ -11,6 +11,18 @@ class BladeOneServiceProvider {
     private static $instance = null;
 
     /**
+     * Register the BladeOne service
+     * Description: This method is used to register the BladeOne service within the plugin.
+     *
+     * @throws Exception
+     * @return void
+     */
+    public function register(): void
+    {
+        self::setup();
+    }
+
+    /**
      * Set up the Blade environment
      * Description: This method is used to set up the Blade environment.
      *

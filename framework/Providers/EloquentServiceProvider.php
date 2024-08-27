@@ -6,6 +6,18 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 class EloquentServiceProvider {
 
+    /**
+     * Register the service provider.
+     * Description: This method is used to register the service. It's currently empty but is required by the Kernel.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        error_log('Registering Eloquent service provider...');
+        self::boot();
+    }
+
     public static function boot(): void
     {
         global $wpdb;

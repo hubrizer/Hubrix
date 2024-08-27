@@ -25,8 +25,8 @@ class Bootstrap {
      *
      * @var bool
      */
-    private static $initialized = false;
-    protected static $dispatcher;
+    private static bool $initialized = false;
+    protected static dispatcher $dispatcher;
 
     /**
      * Initialize the plugin by setting up hooks and loading dependencies.
@@ -40,26 +40,27 @@ class Bootstrap {
     public static function init() {
 
         if (self::$initialized) {
-            error_log('Core bootstrap already initialized');
+            error_log('[!] Core bootstrap already initialized');
             return; // Prevent multiple initializations
         }
 
-        error_log('Initializing Core Bootstrap...');
+        error_log('* Initializing Core Bootstrap...');
         self::$initialized = true;
 
+        self::check_compatibility();
+        self::setup_error_handling();
+        self::check_dependencies();
         self::load_dependencies();
         self::define_constants();
-        self::initialize_kernel();
         self::initialize_menus();
         self::load_textdomain();
+        self::initialize_kernel();
 
         // Log to ensure this block only runs once
-        error_log('Initializing Event Dispatcher and Registering Events...');
+        error_log('- Initializing Event Dispatcher and Registering Events...');
 
         // Instantiate the event dispatcher
-        $dispatcher = new Dispatcher();
-
-        // Instantiate the EventRegistrar with the dispatcher
+        $dispatcher     = new Dispatcher();
         $eventRegistrar = new EventRegistrar($dispatcher);
         $eventRegistrar->registerEventsAndListeners([
             HUBRIX_PLUGIN_DIR . 'app/Backend',
@@ -68,6 +69,20 @@ class Bootstrap {
 
     }
 
+    /**
+     * Check the compatibility of the plugin with the server environment.
+     *
+     * This method checks the compatibility of the plugin with the server environment
+     * by verifying the PHP and WordPress versions.
+     *
+     * @return void
+     */
+    private static function check_dependencies() {
+        /*if (!is_plugin_active('required-plugin/required-plugin.php')) {
+            deactivate_plugins(plugin_basename(__FILE__));
+            wp_die('This plugin requires "Required Plugin" to be active.');
+        }*/
+    }
 
     /**
      * Load the required dependencies for the plugin.
@@ -80,7 +95,42 @@ class Bootstrap {
     private static function load_dependencies() {
         // Load additional custom dependencies here if necessary.
         // Example: require_once PLUGIN_DIR . 'includes/class-example.php';
-        error_log('Loading Dependencies...');
+        //error_log('Loading Dependencies...');
+    }
+
+    /**
+     * Check the compatibility of the plugin with the server environment.
+     *
+     * This method checks the compatibility of the plugin with the server environment
+     * by verifying the PHP and WordPress versions.
+     *
+     * @return void
+     */
+    private static function check_compatibility() {
+        /*if (version_compare(PHP_VERSION, '7.4', '<')) {
+            wp_die('This plugin requires PHP version 7.4 or higher.');
+        }
+
+        global $wp_version;
+        if (version_compare($wp_version, '5.8', '<')) {
+            wp_die('This plugin requires WordPress version 5.8 or higher.');
+        }*/
+    }
+
+    /**
+     * Set up error handling for the plugin.
+     *
+     * This method sets up error handling for the plugin by registering a custom
+     * error handler. The custom error handler is only registered if the plugin
+     * is in debug mode.
+     *
+     * @return void
+     */
+    private static function setup_error_handling(): void
+    {
+        if (Config::get('debug')) {
+            set_error_handler('custom_error_handler');
+        }
     }
 
     /**
@@ -91,8 +141,9 @@ class Bootstrap {
      *
      * @return void
      */
-    private static function define_constants() {
-        error_log('Defining Plugin Constants...');
+    private static function define_constants(): void
+    {
+        error_log('* Defining Plugin Constants...');
 
         // Use the Config class to retrieve and define plugin-related constants.
         // Define plugin framework constants
@@ -123,8 +174,9 @@ class Bootstrap {
      *
      * @return void
      */
-    private static function initialize_kernel() {
-        error_log('Initializing Kernel...');
+    private static function initialize_kernel(): void
+    {
+        error_log('* Initializing Kernel...');
         Kernel::instance();
     }
 
@@ -136,11 +188,12 @@ class Bootstrap {
      *
      * @return void
      */
-    private static function initialize_menus() {
-        error_log('Initializing Menus...');
+    private static function initialize_menus(): void
+    {
+        error_log('* Initializing Menus...');
+
         Menu::instance();
     }
-
 
     /**
      * Load the plugin text domain for localization.
@@ -149,8 +202,10 @@ class Bootstrap {
      *
      * @return void
      */
-    private static function load_textdomain() {
-        error_log('Loading Plugin Text Domain...');
+    private static function load_textdomain(): void
+    {
+        error_log('* Loading Plugin Text Domain...');
+
         load_plugin_textdomain(HUBRIX_PLUGIN_DOMAIN, false, HUBRIX_PLUGIN_DIR . '/languages');
     }
 }
