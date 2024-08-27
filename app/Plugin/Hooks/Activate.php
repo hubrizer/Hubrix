@@ -1,8 +1,8 @@
 <?php
 namespace App\Plugin\Hooks;
 
+use Exception;
 use Hubrix\Core\Database\Migration;
-use function App\Plugin\flush_rewrite_rules;
 
 defined('ABSPATH') || exit; // Exit if accessed directly
 
@@ -16,19 +16,31 @@ class Activate {
     /**
      * Run activation code
      */
-    public static function activate() {
-        my_log('DEBUG', 'Activate::activate', 'Initializing activate hook', '-');
+    public static function start(): void {
+        error_log('Initializing activate hook');
 
-        // Ensure cron jobs are scheduled on activation
-        Cron::instance()->init();
-
-        // Run database migrations
+        self::schedule_cron_jobs();
         self::run_migrations();
+        self::clear_rewrite_rules();
 
-        // Clear rewrite rules
+        error_log('Plugin activation completed');
+    }
+
+    /**
+     * Schedule cron jobs
+     */
+    private static function schedule_cron_jobs(): void {
+        Cron::instance()->init();
+        if (!wp_next_scheduled('my_cron_event')) {
+            error_log('Failed to schedule cron job.');
+        }
+    }
+
+    /**
+     * Clear rewrite rules
+     */
+    private static function clear_rewrite_rules(): void {
         flush_rewrite_rules();
-
-        error_log('Plugin activation completed'); // Log activation completion
     }
 
     /**
@@ -39,7 +51,7 @@ class Activate {
     private static function run_migrations(): void {
         try {
             Migration::run();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log('Migration error: ' . $e->getMessage());
         }
     }

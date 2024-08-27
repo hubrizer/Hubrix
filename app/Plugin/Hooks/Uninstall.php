@@ -2,12 +2,8 @@
 
 namespace App\Plugin\Hooks;
 
-use App\Models\ProductBattle;
-use App\Models\ProductBattleContact;
-use App\Models\ProductBattleShare;
-use App\Models\ProductBattleVote;
-use App\Plugin\Capsule;
-use function App\Plugin\delete_option;
+use Exception;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Uninstall {
 
@@ -24,22 +20,66 @@ class Uninstall {
 
     private static function uninstall(): void
     {
-        // Delete custom tables using Eloquent models
-        ProductBattle::truncate();
-        ProductBattleVote::truncate();
-        ProductBattleContact::truncate();
-        ProductBattleShare::truncate();
+        try {
+            error_log('Uninstalling plugin and deleting data...');
 
-        // Optionally, delete the tables themselves if required
-        Capsule::schema()->dropIfExists('pb_product_battles');
-        Capsule::schema()->dropIfExists('pb_product_battle_votes');
-        Capsule::schema()->dropIfExists('pb_product_battle_leads');
-        Capsule::schema()->dropIfExists('pb_product_battle_shares');
+            // Delete all plugin data
+            // Retrieve all table names from migrations
+            $tableNames = self::getTableNamesFromMigrations();
 
-        // Delete options
-        delete_option('product_battle_plugin_version');
-        delete_option('product_battle_plugin_name');
-        delete_option('product_battle_plugin_domain');
+            // Truncate tables
+            foreach ($tableNames as $tableName) {
+                Capsule::table($tableName)->truncate();
+                error_log("Truncated table: $tableName");
+            }
+
+            // Optionally, drop tables
+            foreach ($tableNames as $tableName) {
+                Capsule::schema()->dropIfExists($tableName);
+                error_log("Dropped table: $tableName");
+            }
+
+            // Delete options at the end
+            delete_option(HUBRIX_PLUGIN_SLUG.'_plugin_version');
+            delete_option(HUBRIX_PLUGIN_SLUG.'_plugin_name');
+            delete_option(HUBRIX_PLUGIN_SLUG.'_plugin_domain');
+
+            error_log('Deleted plugin options.');
+
+        } catch (Exception $e) {
+            error_log('Error during plugin uninstallation: ' . $e->getMessage());
+        }
+    }
+
+    private static function getTableNamesFromMigrations(): array
+    {
+        $tableNames = [];
+        $migrationPath = __DIR__ . '/../database/migrations';
+
+        foreach (glob($migrationPath . '/*.php') as $file) {
+            require_once $file;
+
+            $className = self::getClassNameFromFile($file);
+
+            if (class_exists($className)) {
+                $migration = new $className();
+
+                if (method_exists($migration, 'getTableName')) {
+                    $tableNames[] = $migration->getTableName();
+                }
+            }
+        }
+
+        return $tableNames;
+    }
+
+    private static function getClassNameFromFile($file): string
+    {
+        // Assuming your migration classes follow the PSR-4 naming convention and namespace
+        $baseNamespace = 'App\\Database\\Migrations\\';  // Adjust this according to your namespace
+        $relativePath = str_replace([__DIR__ . '/../database/migrations/', '.php'], '', $file);
+
+        return $baseNamespace . $relativePath;
     }
 }
 

@@ -2,10 +2,6 @@
 
 namespace App\Plugin\Hooks;
 
-use function App\Plugin\delete_transient;
-use function App\Plugin\flush_rewrite_rules;
-use function App\Plugin\wp_clear_scheduled_hook;
-
 defined('ABSPATH') || exit; // Exit if accessed directly
 
 /**
@@ -18,18 +14,52 @@ class Deactivate {
     /**
      * Run deactivation code
      */
-    public static function deactivate() {
-        error_log('Deactivating plugin'); // Add this to confirm the method is being called
+    public static function start(): void {
+        self::unschedule_cron_jobs();
+        self::clear_scheduled_events();
+        self::remove_temp_data();
+        self::flush_rewrite_rules();
+        error_log('Plugin deactivation completed.');
+    }
 
-        Cron::unschedule_all_jobs(); // Unschedule jobs on deactivation
+    /**
+     * Unschedule all cron jobs
+     *
+     * @return void
+     */
+    private static function unschedule_cron_jobs(): void {
+        Cron::unschedule_all_jobs();
+        error_log('Cron jobs unscheduled.');
+    }
 
-        // Clear scheduled events
+    /**
+     * Clear scheduled events
+     *
+     * @return void
+     */
+    private static function clear_scheduled_events(): void {
         wp_clear_scheduled_hook('pb_cron_event');
+        error_log('Cleared scheduled event: pb_cron_event.');
+    }
 
-        // Optionally, you can also deactivate other features
-        // For example: remove temporary options or transient data
+
+    /**
+     * Remove temporary data
+     *
+     * @return void
+     */
+    private static function remove_temp_data(): void {
         delete_transient('pb_temp_data');
+        error_log('Deleted transient: pb_temp_data.');
+    }
 
+    /**
+     * Flush rewrite rules
+     *
+     * @return void
+     */
+    private static function flush_rewrite_rules(): void {
         flush_rewrite_rules();
+        error_log('Flushed rewrite rules.');
     }
 }
