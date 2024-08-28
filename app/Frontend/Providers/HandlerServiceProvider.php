@@ -13,6 +13,32 @@ use ReflectionClass;
  */
 class HandlerServiceProvider
 {
+    private static $instance = null;
+
+    private function __construct()
+    {
+        // Your constructor logic here
+    }
+
+    /**
+     * Get the singleton instance of the HandlerServiceProvider.
+     *
+     * @return HandlerServiceProvider
+     */
+    public static function getInstance(): HandlerServiceProvider
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public static function create()
+    {
+        return new self();
+    }
+
     /**
      * Register the service provider.
      * Description: This method is used to register the service. It's currently empty but is required by the Kernel.
@@ -77,4 +103,7 @@ class HandlerServiceProvider
 
         return 'App\\Frontend\\' . $relativePath;
     }
+
+    private function __clone() {}
+    public function __wakeup() {}
 }

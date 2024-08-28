@@ -5,10 +5,12 @@ namespace Hubrix;
 use App\Backend\Providers\HandlerServiceProvider as BackendHandlerServiceProvider;
 use App\Frontend\Providers\HandlerServiceProvider as FrontendHandlerServiceProvider;
 
+use Exception;
 use Hubrix\Core\Helpers\WordPressHelpers;
 use Hubrix\Core\Http\Route;
 use Hubrix\Core\Plugin\Helpers;
 
+use Hubrix\Core\ServiceProviderRegistry;
 use Hubrix\Providers\EloquentServiceProvider;
 use Hubrix\Providers\RouteServiceProvider;
 
@@ -115,16 +117,7 @@ class Kernel
     private function register_providers(array $providers): void
     {
         foreach ($providers as $provider) {
-            if (class_exists($provider)) {
-                $providerInstance = new $provider();
-                try {
-                    $providerInstance->register();
-                } catch (\Exception $e) {
-                    error_log("-- Failed to register provider: {$provider} with error: " . $e->getMessage());
-                }
-            } else {
-                error_log("-- Provider class {$provider} not found.");
-            }
+            ServiceProviderRegistry::load($provider);
         }
     }
 

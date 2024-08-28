@@ -2,8 +2,6 @@
 
 namespace App\Backend\Providers;
 
-use App\Backend\Hooks\LogUserLoginHook;
-use App\Backend\Hooks\DashboardFooterHook;
 use ReflectionClass;
 
 /**
@@ -29,8 +27,6 @@ class HookServiceProvider
      */
     protected function autoloadHooks(): void
     {
-        my_log('INFO','Auto loading hooks', 'HookServiceProvider');
-
         $hookPath = __DIR__ . '/../Hooks';
 
         foreach (glob($hookPath . '/*.php') as $file) {

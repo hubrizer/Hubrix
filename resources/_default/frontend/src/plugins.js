@@ -1,7 +1,3 @@
-//
-// 3rd-Party Plugins JavaScript Includes
-//
-
 module.exports = [
     require('../../../../node_modules/jquery/dist/jquery.min.js'),
     require('../../../../node_modules/bootstrap/dist/js/bootstrap.min.js'),

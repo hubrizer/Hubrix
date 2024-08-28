@@ -8,7 +8,7 @@ class EnqueueServiceProvider
 {
     public function register(): void
     {
-        // Ensure that this only runs in the frontend context
+        // Ensure this only runs in the frontend context
         if (!is_admin()) {
             add_action('wp_enqueue_scripts', [$this, 'enqueueAssets'], 10);
         }
@@ -23,6 +23,7 @@ class EnqueueServiceProvider
     {
         error_log('Enqueuing Frontend Global scripts and styles...');
 
+        // Enqueue global frontend scripts and styles
         wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-plugins-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/plugins.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
         wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/vendors.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
         wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-main-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/main.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
@@ -30,6 +31,7 @@ class EnqueueServiceProvider
         wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/vendors.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
         wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-main-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/style.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
 
+        // Localize the main global script
         wp_localize_script(HUBRIX_PLUGIN_SLUG.'-frontend-main-js', 'js_frontend_obj', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('ajax_frontend_nonce'),
@@ -55,8 +57,6 @@ class EnqueueServiceProvider
             error_log('Autoloading ' . $className);
 
             if (class_exists($className)) {
-                $reflection = new ReflectionClass($className);
-
                 try {
                     $className::init();
                 } catch (Exception $e) {

@@ -2,35 +2,47 @@
 
 namespace App\Backend\Providers;
 
+use App\Core\ServiceProviderRegistry;
 use Exception;
 use ReflectionClass;
 
-/**
- * Service provider to autoload backend handlers.
- * This class is responsible for autoloading backend handlers. It scans the Handlers directory
- *
- * @package App\Backend\Providers
- */
 class HandlerServiceProvider
 {
-    /**
-     * Register the service provider.
-     * Description: This method is used to register the service. It's currently empty but is required by the Kernel.
-     *
-     * @return void
-     */
-    public function register(): void
+    private static $instance = null;
+
+    private function __construct()
     {
-        if (!is_admin()) return;
-        $this->autoloadHandlers();
+        // Your constructor logic here
     }
 
     /**
-     * Autoload backend handlers.
-     * Description: This method is used to autoload backend handlers. It scans the Handlers directory
+     * Get the singleton instance of the HandlerServiceProvider.
      *
-     * @return void
+     * @return HandlerServiceProvider
      */
+    public static function getInstance(): HandlerServiceProvider
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    public function register(): void
+    {
+        if (is_admin() && !wp_doing_ajax()) {
+            return;
+        }
+
+        $this->autoloadHandlers();
+    }
+
+    public static function create()
+    {
+        return new self();
+    }
+
     protected function autoloadHandlers(): void
     {
         error_log('Autoloading backend handlers...');
@@ -54,18 +66,11 @@ class HandlerServiceProvider
                     error_log('Class not found: ' . $className);
                 }
             } catch (Exception $e) {
-                error_log('Error loading handler: ' . $e->getMessage());
+                error_log('Error loading backend handler: ' . $e->getMessage());
             }
         }
     }
 
-    /**
-     * Get the class name from the file path.
-     * Description: This method is used to get the class name from the file path.
-     *
-     * @param string $file
-     * @return string
-     */
     private function getClassNameFromFile(string $file): string
     {
         $relativePath = str_replace(HUBRIX_BACKEND_DIR, '', $file);
@@ -74,4 +79,7 @@ class HandlerServiceProvider
 
         return 'App\\Backend\\' . $relativePath;
     }
+
+    private function __clone() {}
+    public function __wakeup() {}
 }

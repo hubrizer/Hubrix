@@ -10,7 +10,7 @@ use Hubrix\Core\Plugin\Config;
 
 return [
     'admin_menu' => [
-        'plugin_menu_name' => 'Hubrix',
+        'plugin_menu_name' => 'Hubrix Plugin',
         'plugin_domain'    => 'en_US',
         'capability'       => 'manage_options',
         'slug'             => HUBRIX_PLUGIN_SLUG,
@@ -27,7 +27,6 @@ return [
                 'slug'       => HUBRIX_PLUGIN_SLUG.'-dashboard',
                 'callback'   => 'handle',
                 'controller' => 'App\Backend\Controllers\DashboardController',
-                'icon'       => 'dashicons-admin-site',
                 'position'   => 58
             ],
             'contacts' => [

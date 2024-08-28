@@ -12,12 +12,13 @@ return [
      */
 
     'driver' => 'smtp',
-    'host' => 'smtp.mailtrap.io',
+    'host' => 'sandbox.smtp.mailtrap.io',
+    'smtp_auth' => true,
     'port' => 2525,
-    'from' => ['address' => 'hello@example.com', 'name' => 'Example'],
+    'from' => ['address' => 'xxxx+1@inbox.mailtrap.io', 'name' => 'Product Battle v2.0'],
     'encryption' => 'tls',
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
+    'username' => 'xxx',
+    'password' => 'xxx',
     'sendmail' => '/usr/sbin/sendmail -bs',
     'markdown' => [
         'theme' => 'default',

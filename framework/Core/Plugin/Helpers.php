@@ -30,6 +30,7 @@ class Helpers {
         self::include_core_helper_file('array-helpers.php');
         self::include_core_helper_file('string-helpers.php');
         self::include_core_helper_file('url-helpers.php');
+        self::include_core_helper_file('request-helpers.php');
 
         // Load external helper files
         self::include_external_helper_files(HUBRIX_PLUGIN_DIR . 'helpers/');
