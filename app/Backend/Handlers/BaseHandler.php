@@ -133,7 +133,8 @@ abstract class BaseHandler
      * @param string $start_date The start date of the battle.
      * @param string $end_date The end date of the battle.
      */
-    public static function determine_battle_status(string $start_date, string $end_date) {
+    public static function determine_battle_status(string $start_date, string $end_date): string
+    {
         $current_time = current_time('timestamp'); // Get current timestamp
 
         $start_timestamp = strtotime($start_date);
@@ -145,10 +146,10 @@ abstract class BaseHandler
         if ($current_time < $start_timestamp) {
             error_log("Status: Scheduled");
             return 'Scheduled';
-        } elseif ($current_time >= $start_timestamp && $current_time <= $end_timestamp) {
+        } elseif ($current_time <= $end_timestamp) {
             error_log("Status: Active");
             return 'Active';
-        } elseif ($current_time > $end_timestamp) {
+        } else {
             error_log("Status: Ended");
             return 'Ended';
         }

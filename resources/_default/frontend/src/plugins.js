@@ -1,8 +1,17 @@
 module.exports = [
-    require('../../../../node_modules/jquery/dist/jquery.min.js'),
-    require('../../../../node_modules/bootstrap/dist/js/bootstrap.min.js'),
-    require('../../../../node_modules/@popperjs/core/dist/umd/popper.js'),
+    // Include jQuery only for jQuery-dependent plugins
+    //require('../../../../node_modules/jquery/dist/jquery.min.js'),
+
+    // Bootstrap 5, which no longer depends on jQuery
+    //require('../../../../node_modules/bootstrap/dist/js/bootstrap.min.js'),
+
+    // Popper.js (required for Bootstrap tooltips, dropdowns, etc.)
+    //require('../../../../node_modules/@popperjs/core/dist/umd/popper.js'),
+
+    // Moment.js for date manipulation
     require('../../../../node_modules/moment-mini/moment.min.js'),
+
+    // Other packages
     require('../../../../node_modules/wnumb/wNumb.js'),
     require('../../../../node_modules/nouislider/dist/nouislider.js'),
     require('../../../../node_modules/swiper/swiper-bundle.js'),

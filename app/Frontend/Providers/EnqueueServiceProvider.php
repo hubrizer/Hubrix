@@ -25,10 +25,8 @@ class EnqueueServiceProvider
 
         // Enqueue global frontend scripts and styles
         wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-plugins-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/plugins.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
-        wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/vendors.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
         wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-frontend-main-js', HUBRIX_PLUGIN_URL . 'public/frontend/js/main.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
 
-        wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-vendors-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/vendors.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
         wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-frontend-main-css', HUBRIX_PLUGIN_URL . 'public/frontend/css/style.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
 
         // Localize the main global script

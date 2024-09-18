@@ -27,7 +27,6 @@ module.exports = merge(common, {
         main: path.resolve(__dirname, 'resources/_default/frontend/src/scripts.js'),
         plugins: path.resolve(__dirname, 'resources/_default/frontend/src/plugins.js'),
         style: path.resolve(__dirname, 'resources/_default/frontend/src/style.scss'),
-        vendors: ['bootstrap/dist/css/bootstrap.min.css'],
         ...getEntries('resources/_default/frontend/src/scripts/pages', 'scripts'),
         ...getEntries('resources/_default/frontend/src/styles/pages', 'styles'),
         ...getEntries('resources/_default/frontend/src/scripts/shortcodes', 'scripts'),

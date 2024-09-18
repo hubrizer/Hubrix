@@ -26,10 +26,8 @@ class EnqueueServiceProvider
             error_log('Enqueuing Backend Global scripts and styles...');
 
             wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-backend-plugins-js', HUBRIX_PLUGIN_URL . 'public/backend/js/plugins.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
-            wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-backend-vendors-js', HUBRIX_PLUGIN_URL . 'public/backend/js/vendors.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
             wp_enqueue_script(HUBRIX_PLUGIN_SLUG.'-backend-main-js', HUBRIX_PLUGIN_URL . 'public/backend/js/main.bundle.js', [], HUBRIX_PLUGIN_VERSION, true);
 
-            wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-backend-vendors-css', HUBRIX_PLUGIN_URL . 'public/backend/css/vendors.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
             wp_enqueue_style(HUBRIX_PLUGIN_SLUG.'-backend-main-css', HUBRIX_PLUGIN_URL . 'public/backend/css/style.bundle.css', [], HUBRIX_PLUGIN_VERSION, 'all');
 
             wp_localize_script(HUBRIX_PLUGIN_SLUG.'-backend-main-js', 'js_backend_obj', [

@@ -6,5 +6,4 @@ module.exports = [
     //mixins
     //pages
     //utils
-
 ];

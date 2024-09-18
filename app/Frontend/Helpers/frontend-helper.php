@@ -2,6 +2,8 @@
 
 // Frontend-specific helper functions
 
+use Carbon\Carbon;
+
 if (!function_exists('frontend_helper_function')) {
     /**
      * Example frontend helper function
