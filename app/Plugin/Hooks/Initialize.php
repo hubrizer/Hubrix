@@ -15,7 +15,7 @@ class Initialize {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing Initialize hook');
+        error_log('Initializing Plugin Initialize hook');
 
     }
 

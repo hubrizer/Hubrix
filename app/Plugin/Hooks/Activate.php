@@ -17,7 +17,7 @@ class Activate {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing activate hook');
+        error_log('Initializing Plugin activate hook');
 
         self::schedule_cron_jobs();
         self::run_migrations();
@@ -30,9 +30,17 @@ class Activate {
      * Schedule cron jobs
      */
     private static function schedule_cron_jobs(): void {
-        Cron::instance()->init();
+        error_log('** Reached schedule_cron_jobs() **');
         if (!wp_next_scheduled('my_cron_event')) {
-            error_log('Failed to schedule cron job.');
+            error_log('Scheduling cron job');
+            try {
+                Cron::instance()->init();
+                error_log('Cron job scheduled successfully.');
+            } catch (Exception $e) {
+                error_log('Failed to schedule cron job: ' . $e->getMessage());
+            }
+        } else {
+            error_log('Cron job already scheduled.');
         }
     }
 

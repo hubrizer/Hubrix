@@ -2,10 +2,7 @@
 
 namespace App\Plugin\Hooks;
 
-use function App\Plugin\add_action;
-use function App\Plugin\wp_next_scheduled;
-use function App\Plugin\wp_schedule_event;
-use function App\Plugin\wp_unschedule_event;
+use Hubrix\Core\Interfaces\JobInterface;
 
 /**
  * Class to handle cron jobs.
@@ -53,13 +50,13 @@ class Cron {
      * Initialize the cron jobs.
      */
     public function init() {
+        error_log('Initializing Plugin cron jobs hook');
         if (self::$initialized) {
             return; // Prevent multiple initializations
         }
         self::$initialized = true;
 
-        self::schedule_jobs(HUBRIX_BACKEND_DIR . 'Jobs');
-        self::schedule_jobs(HUBRIX_FRONTEND_DIR . 'Jobs');
+        self::schedule_jobs(HUBRIX_APP_PLUGIN_DIR . 'WP_Events');
     }
 
     /**
@@ -68,8 +65,7 @@ class Cron {
     public static function unschedule_all_jobs() {
         error_log('Unscheduling all cron jobs');
 
-        self::unschedule_jobs(HUBRIX_BACKEND_DIR . 'Jobs');
-        self::unschedule_jobs(HUBRIX_FRONTEND_DIR . 'Jobs');
+        self::unschedule_jobs(HUBRIX_APP_PLUGIN_DIR . 'WP_Events');
     }
 
     /**
@@ -82,10 +78,10 @@ class Cron {
             require_once $file;
             $class_name = self::get_class_name_from_file($file);
             if (class_exists($class_name) && in_array(JobInterface::class, class_implements($class_name))) {
-                $hook = 'hubrix_cron_job_' . strtolower($class_name);
+                $hook = str_replace('\\', '_', $class_name);
                 $timestamp = wp_next_scheduled($hook);
                 if ($timestamp) {
-                    error_log('Unscheduled hook: ' . $hook); // Add logging here
+                    error_log('Unscheduled hook: ' . $hook);
                     wp_unschedule_event($timestamp, $hook);
                 }
             }
@@ -105,7 +101,7 @@ class Cron {
             $class_name = self::get_class_name_from_file($file);
             error_log('Detected class: ' . $class_name);
             if (class_exists($class_name) && in_array(JobInterface::class, class_implements($class_name))) {
-                $hook = 'hubrix_cron_job_' . strtolower($class_name);
+                $hook = str_replace('\\', '_', $class_name);
                 if (!wp_next_scheduled($hook)) {
                     wp_schedule_event(time(), 'daily', $hook);
                 }
@@ -127,10 +123,13 @@ class Cron {
         $namespace = '';
         if (preg_match('/namespace\s+([^;]+);/', $contents, $matches)) {
             $namespace = $matches[1] . '\\';
+            error_log('Namespace detected: ' . $namespace);
         }
         if (preg_match('/class\s+([^\s]+)/', $contents, $matches)) {
+            error_log('Class detected: ' . $matches[1]);
             return $namespace . $matches[1];
         }
+        error_log('No class detected in file: ' . $file);
         return '';
     }
 }

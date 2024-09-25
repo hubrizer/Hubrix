@@ -15,7 +15,7 @@ class EnqueueAdminScripts {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing EnqueueAdminScripts hook');
+        error_log('Initializing Plugin EnqueueAdminScripts hook');
 
     }
 

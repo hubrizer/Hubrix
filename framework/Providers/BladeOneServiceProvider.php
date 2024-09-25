@@ -72,7 +72,7 @@ class BladeOneServiceProvider {
             $output = self::getInstance()->run($view, $data);
         } catch (Exception $e) {
             // Handle the exception (logging or rendering a fallback view)
-            self::log('error', 'View Rendering Error', $e->getMessage());
+            error_log('View Rendering Error:'. $e->getMessage(),'error');
             $output = self::fallbackView($e->getMessage());
         }
 

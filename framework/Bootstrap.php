@@ -191,6 +191,7 @@ class Bootstrap {
         define('HUBRIX_FRONTEND_URL', esc_url_raw(Config::get('constants.plugin_app_frontend_url')));
         define('HUBRIX_PLUGIN_DIR', sanitize_text_field(Config::get('constants.plugin_dir')));
         define('HUBRIX_PLUGIN_URL', esc_url_raw(Config::get('constants.plugin_url')));
+        define('HUBRIX_APP_PLUGIN_DIR', Config::get('constants.app_plugin_dir'));
     }
 
     /**

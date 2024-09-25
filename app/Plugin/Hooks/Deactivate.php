@@ -18,7 +18,6 @@ class Deactivate {
         self::unschedule_cron_jobs();
         self::clear_scheduled_events();
         self::remove_temp_data();
-        self::flush_rewrite_rules();
         error_log('Plugin deactivation completed.');
     }
 

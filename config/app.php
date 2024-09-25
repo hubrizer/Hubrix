@@ -19,6 +19,8 @@ return [
         Hubrix\Providers\EloquentServiceProvider::class, //eloquent provider - disabled will affect your models if using eloquent
         Hubrix\Providers\BladeOneServiceProvider::class, //bladeOne provider - disabled will affect your views if using blade
         Hubrix\Providers\MailServiceProvider::class, //mail service provider - disabled will affect your emails if using mail
+        Hubrix\Providers\HookServiceProvider::class, //Register plugin hooks - disabled will affect your hooks if using hooks
+        Hubrix\Providers\RouteServiceProvider::class, //Register plugin routes - disabled will affect your routes if using routes
 
         // Backend Providers
         App\Backend\Providers\HookServiceProvider::class, //hook service provider - disabled will affect your hooks if using hooks

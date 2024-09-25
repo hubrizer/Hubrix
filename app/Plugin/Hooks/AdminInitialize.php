@@ -15,7 +15,7 @@ class AdminInitialize {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing AdminInitialize hook');
+        error_log('Initializing Plugin AdminInitialize hook');
 
     }
 

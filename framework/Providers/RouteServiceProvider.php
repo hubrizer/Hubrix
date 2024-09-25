@@ -4,6 +4,19 @@ namespace Hubrix\Providers;
 class RouteServiceProvider {
     protected static $routesLoaded = false;
 
+    /**
+     * Register the BladeOne service
+     * Description: This method is used to register the BladeOne service within the plugin.
+     *
+     * @throws Exception
+     * @return void
+     */
+    public function register(): void
+    {
+        error_log("RouteServiceProvider::register() method is being called.");
+        $this->boot();
+    }
+
     public static function boot() {
         // Load routes if not already loaded
         if (!self::$routesLoaded) {

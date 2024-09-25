@@ -15,7 +15,7 @@ class EnqueueFrontendScripts {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing EnqueueFrontendScripts hook');
+        error_log('Initializing Plugin EnqueueFrontendScripts hook');
 
     }
 

@@ -15,8 +15,7 @@ class Shutdown {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing Shutdown hook');
-
+        error_log('Initializing Plugin Shutdown hook');
     }
 
 }

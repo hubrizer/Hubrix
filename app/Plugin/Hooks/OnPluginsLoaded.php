@@ -15,7 +15,7 @@ class OnPluginsLoaded {
      * Run activation code
      */
     public static function start(): void {
-        error_log('Initializing OnPluginsLoaded hook');
+        error_log('Initializing Plugin OnPluginsLoaded hook');
 
     }
 

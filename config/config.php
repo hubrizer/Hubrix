@@ -25,5 +25,6 @@ return [
         'plugin_app_backend_url' => plugin_dir_url(__FILE__) . 'app/Backend/',
         'plugin_app_frontend_dir' => dirname(plugin_dir_path(__FILE__)) . '/app/Frontend/',
         'plugin_app_frontend_url' => plugin_dir_url(__DIR__) . 'app/Frontend/',
+        'app_plugin_dir'    => plugin_dir_path(__FILE__) . 'app/Plugin/',
     ],
 ];

@@ -30,6 +30,9 @@ class Kernel
      */
     protected static ?Kernel $instance = null;
 
+    // Flag to check initialization
+    private static $initialized = false;
+
     /**
      * Get the instance of the plugin
      *
@@ -37,8 +40,6 @@ class Kernel
      */
     public static function instance(): ?Kernel
     {
-        error_log("-- Initializing Core Kernel...");
-
         if (is_null(self::$instance)) {
             self::$instance = new self();
             self::$instance->init();
@@ -65,6 +66,15 @@ class Kernel
      */
     private function init(): void
     {
+// Check if already initialized
+        if (self::$initialized) {
+            error_log('-- Kernel already initialized, skipping...');
+            return;
+        }
+
+        self::$initialized = true; // Set initialized flag
+        error_log('-- Initializing Core Kernel...');
+        //error_log('-- Initializing Core Kernel... ' . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), true));
         // Setup plugin constants or other initial configurations
         $this->load_helpers();
         $this->init_providers();
