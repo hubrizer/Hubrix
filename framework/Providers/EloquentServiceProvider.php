@@ -26,6 +26,7 @@ class EloquentServiceProvider {
         $this->boot();
     }
 
+
     /**
      * Boot the Eloquent service.
      *

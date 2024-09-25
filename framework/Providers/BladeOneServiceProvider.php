@@ -62,10 +62,24 @@ class BladeOneServiceProvider {
      * @throws Exception
      */
     public static function render($view, $data = []) {
-        // Replace underscores with hyphens in the view name
-        // (in case you are using underscores in your view file names.)
-        $view = str_replace('_', '-', $view);
+        $useOutputBuffering = !ini_get('zlib.output_compression');
 
-        return self::getInstance()->run($view, $data);
+        if ($useOutputBuffering) {
+            ob_start(); // Start output buffering if zlib compression is not enabled
+        }
+
+        try {
+            $output = self::getInstance()->run($view, $data);
+        } catch (Exception $e) {
+            // Handle the exception (logging or rendering a fallback view)
+            self::log('error', 'View Rendering Error', $e->getMessage());
+            $output = self::fallbackView($e->getMessage());
+        }
+
+        if ($useOutputBuffering) {
+            $output = ob_get_clean(); // Get and clean the buffer if output buffering was used
+        }
+
+        return $output;
     }
 }
