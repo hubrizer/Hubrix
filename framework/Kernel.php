@@ -5,13 +5,10 @@ namespace Hubrix;
 use App\Backend\Providers\HandlerServiceProvider as BackendHandlerServiceProvider;
 use App\Frontend\Providers\HandlerServiceProvider as FrontendHandlerServiceProvider;
 
-use Exception;
-use Hubrix\Core\Helpers\WordPressHelpers;
 use Hubrix\Core\Http\Route;
 use Hubrix\Core\Plugin\Helpers;
 
 use Hubrix\Core\ServiceProviderRegistry;
-use Hubrix\Providers\EloquentServiceProvider;
 use Hubrix\Providers\RouteServiceProvider;
 
 defined('ABSPATH') || exit; // Exit if accessed directly
@@ -96,14 +93,8 @@ class Kernel
     {
         error_log('Initializing Service Providers...');
 
-        // Initialize Eloquent provider
-        EloquentServiceProvider::boot();
-
         // Register all providers (they will internally handle context checks)
-        $providers = config('providers','app') ?? [
-            BackendHandlerServiceProvider::class,
-            FrontendHandlerServiceProvider::class,
-        ];
+        $providers = config('providers','app');
 
         $this->register_providers($providers);
     }

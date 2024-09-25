@@ -20,7 +20,7 @@ class BladeOneServiceProvider {
     public function register(): void
     {
         error_log("BladeOneServiceProvider::register() method is being called.");
-        self::setup();
+        $this->setup();
     }
 
     /**

@@ -16,13 +16,14 @@ class EloquentServiceProvider {
 
     /**
      * Register the service provider.
-     * Description: This method is used to register the service. It's currently empty but is required by the Kernel.
+     * Description: This method is used to register the service. This is required by the Kernel.
      *
      * @return void
      */
     public function register(): void
     {
         error_log('Registering Eloquent service provider...');
+        $this->boot();
     }
 
     /**

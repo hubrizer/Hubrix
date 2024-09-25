@@ -8,6 +8,7 @@ class ServiceProviderRegistry
     public static function load(string $providerClass): void
     {
         if (!in_array($providerClass, self::$loadedProviders)) {
+
             // Assuming the service provider class has a static method 'create' that returns an instance
             if (method_exists($providerClass, 'create')) {
                 $provider = $providerClass::create();

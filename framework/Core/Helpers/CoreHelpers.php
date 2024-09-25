@@ -5,7 +5,7 @@ use Exception;
 use Hubrix\Core\Logger as Log;
 use Hubrix\Core\NonceManager;
 use Hubrix\Core\Plugin\Config;
-use Hubrix\Providers\BladeOneServiceProvider as BladeOne;
+use Hubrix\Providers\BladeOneServiceProvider;
 
 class CoreHelpers
 {
@@ -19,7 +19,7 @@ class CoreHelpers
     public static function view(string $view, array $data = []): string
     {
         try {
-            return BladeOne::render($view, $data);
+            return BladeOneServiceProvider::render($view, $data);
         } catch (Exception $e) {
             self::log('error', 'View Rendering Error', $e->getMessage());
             return self::fallbackView($e->getMessage());
